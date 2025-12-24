@@ -13,8 +13,8 @@ func main() {
 	var svc service.BookingService = impl.User{}
 	svc.BookTicket(user)
 	impl.Wg.Add(2)
-	go svc.SendTicket(user)    // start a new goroutine (thread)
-	go impl.DoOtherWorks(user) // start a new goroutine (thread)
+	go svc.SendTicket(user) // start a new goroutine (thread)
+	go user.DoOtherWorks()  // start a new goroutine (thread)
 	fmt.Println("##############################################")
 	fmt.Println("Conference: ", impl.ConferenceName)
 	fmt.Println("other instructions")
