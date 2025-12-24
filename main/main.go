@@ -1,16 +1,22 @@
 package main
 
 import (
-	"github.com/trng-tr/golab3/impl"
-	"github.com/trng-tr/golab3/reader"
-	"github.com/trng-tr/golab3/service"
+	"fmt"
+
+	"github.com/trng-tr/golab4/impl"
+	"github.com/trng-tr/golab4/reader"
+	"github.com/trng-tr/golab4/service"
 )
 
 func main() {
-	for {
-		user, _ := reader.GetUserInput()
-		var svc service.BookingService = impl.User{}
-		svc.BookTicket(user)
-		svc.SendTicket(user)
-	}
+	user, _ := reader.GetUserInput()
+	var svc service.BookingService = impl.User{}
+	svc.BookTicket(user)
+	impl.Wg.Add(2)
+	go svc.SendTicket(user)    // start a new goroutine (thread)
+	go impl.DoOtherWorks(user) // start a new goroutine (thread)
+	fmt.Println("##############################################")
+	fmt.Println("Conference: ", impl.ConferenceName)
+	fmt.Println("other instructions")
+	impl.Wg.Wait()
 }
