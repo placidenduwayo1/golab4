@@ -1,3 +1,2 @@
-# Goroutines
-
-concurrency in Go programming
+# golab4
+**Goroutines**: **concurrent** goroutines in Go
