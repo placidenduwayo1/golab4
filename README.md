@@ -1,4 +1,3 @@
 # Goroutines
 
-## concurrency
-## parallel
+concurrency in Go programming
