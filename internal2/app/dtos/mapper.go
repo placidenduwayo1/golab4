@@ -12,8 +12,8 @@ func ToUserResponse(model domain.User) UserResponse {
 	}
 }
 
-func ToUser(ur UserRequest) *domain.User {
-	return &domain.User{
+func ToUser(ur UserRequest) domain.User {
+	return domain.User{
 		Firstname: ur.Firstname,
 		Lastname:  ur.Lastame,
 		Poids:     ur.Poids,

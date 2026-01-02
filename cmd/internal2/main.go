@@ -18,7 +18,7 @@ func main() {
 		Poids:     65,
 	}
 
-	var re repo.Repository = imp1.NewRepositoryImpl(func(user *domain.User) string {
+	var re repo.Repository[domain.User] = imp1.NewRepositoryImpl(func(user *domain.User) string {
 		return user.Id
 	})
 	var createUserService contract.UserCreateService = imp2.NewUserCreateServiceImpl(re)

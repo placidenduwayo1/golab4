@@ -6,15 +6,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/trng-tr/golab4/internal2/app/dtos"
 	"github.com/trng-tr/golab4/internal2/app/repositories/repo"
+	"github.com/trng-tr/golab4/internal2/domain"
 )
 
 // UserCreateServiceImpl structurecto implement UserCreateService
 type UserCreateServiceImpl struct {
-	repository repo.Repository
+	repository repo.Repository[domain.User]
 }
 
 // NewUserCreateServiceImpl constructor function
-func NewUserCreateServiceImpl(repo repo.Repository) *UserCreateServiceImpl {
+func NewUserCreateServiceImpl(repo repo.Repository[domain.User]) *UserCreateServiceImpl {
 	return &UserCreateServiceImpl{
 		repository: repo,
 	}
@@ -36,10 +37,10 @@ func (ucsi *UserCreateServiceImpl) Create(u dtos.UserRequest) (*dtos.UserRespons
 	if ucsi.repository == nil {
 		return nil, errors.New("repository is nil (service not initialized)")
 	}
-	var user = dtos.ToUser(u)
+	var user domain.User = dtos.ToUser(u)
 	user.Id = uuid.NewString()[:5]
 	user.Email = u.Firstname + "." + u.Lastame + "@" + "domain.com"
-	savedUser, err := ucsi.repository.Save(user)
+	savedUser, err := ucsi.repository.Save(&user)
 	if err != nil {
 		return nil, err
 	}

@@ -2,34 +2,32 @@ package impl
 
 import (
 	"errors"
-
-	"github.com/trng-tr/golab4/internal2/domain"
 )
 
 // RepositoryImpl struct to implement RepositoryImpl
-type RepositoryImpl struct {
-	GetId func(*domain.User) string
-	users map[string]*domain.User
+type RepositoryImpl[T any] struct {
+	GetId func(*T) string
+	data  map[string]*T
 }
 
 // NewRepositoryImpl func constructor, DI par constructeur
-func NewRepositoryImpl(getId func(*domain.User) string) *RepositoryImpl {
-	return &RepositoryImpl{
+func NewRepositoryImpl[T any](getId func(*T) string) *RepositoryImpl[T] {
+	return &RepositoryImpl[T]{
 		GetId: getId,
-		users: make(map[string]*domain.User, 0),
+		data:  make(map[string]*T, 0),
 	}
 }
 
 // Save: implement interface
-func (ri *RepositoryImpl) Save(user *domain.User) (*domain.User, error) {
-	if user == nil {
+func (ri *RepositoryImpl[T]) Save(t *T) (*T, error) {
+	if t == nil {
 		return nil, errors.New("error: object user is nil")
 	}
-	userId := ri.GetId(user)
-	if userId == "" {
+	objectId := ri.GetId(t)
+	if objectId == "" {
 		return nil, errors.New("error: id is empty")
 	}
-	ri.users[userId] = user
+	ri.data[objectId] = t
 
-	return user, nil
+	return t, nil
 }
